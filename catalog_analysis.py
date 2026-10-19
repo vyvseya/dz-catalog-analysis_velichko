@@ -83,7 +83,8 @@ movies = [
     },
 ]
 
-# Этап 1 
+
+# Этап 1
 def average_rating(movies):
     """Возвращает средний рейтинг фильмов с округлением до одного знака"""
     total_rating = 0
@@ -117,8 +118,9 @@ def duration_in_hours(minutes):
 
     return f"{hours}ч {remaining_minutes}м"
 
+
 # Этап 2
-def rating_tier(rating): 
+def rating_tier(rating):
     """Определяет категорию фильма по рейтингу"""
     if rating >= 9:
         return "шедевр"
@@ -139,6 +141,43 @@ def decade_label(year):
             return "старые"
 
 
+# Этап 3
+def not_comedy_movies(movies):
+    """Выводит названия фильмов, кроме комедий"""
+    for movie in movies:
+        if "comedy" in movie["genres"]:
+            continue
+        print(movie["title"])
+
+
+def find_first_masterpiece(movies):
+    """Находит первый фильм с рейтингом выше 9.0"""
+    index = 0
+
+    while index < len(movies):
+        movie = movies[index]
+
+        if movie["rating"] > 9.0:
+            print("Найден шедевр:", movie["title"])
+            break
+
+        index += 1
+    else:
+        print("Шедевров не найдено")
+
+
+def count_long_movies(movies, threshold=120):
+    """Считает количество фильмов длиннее указанного числа"""
+    count = 0
+
+    for movie in movies:
+        if movie["duration_min"] > threshold:
+            count += 1
+
+    return count
+
+
+
 if __name__ == "__main__":
     # Проверки этапа 1
     print("Средний рейтинг:", average_rating(movies))
@@ -155,3 +194,15 @@ if __name__ == "__main__":
     print("Год 2020:", decade_label(2020))
     print("Год 2021:", decade_label(2021))
     print("Год 2024:", decade_label(2024))
+
+    # Проверки этапа 3
+    print("\nФильмы без жанра comedy:")
+    not_comedy_movies(movies)
+    print("\nПоиск шедевра в полном каталоге:")
+    find_first_masterpiece(movies)
+    print("\nПоиск шедевра в сокращённом каталоге:")
+    find_first_masterpiece(movies[:7])
+    print("\nКоличество длинных фильмов:")
+    print("Длиннее 120 минут:", count_long_movies(movies))
+    print("Длиннее 150 минут:", count_long_movies(movies, 150))
+    print("Длиннее 200 минут:", count_long_movies(movies, 200))
