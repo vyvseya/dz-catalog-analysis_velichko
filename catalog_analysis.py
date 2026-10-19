@@ -83,8 +83,9 @@ movies = [
     },
 ]
 
+
 def average_rating(movies):
-    """№1 Средний рейтинг округленный до одного знака"""
+    """Возвращает средний рейтинг фильмов с округлением до одного знака"""
     total_rating = 0
 
     for movie in movies:
@@ -93,5 +94,31 @@ def average_rating(movies):
     average = total_rating / len(movies)
     return round(average, 1)
 
+
+def catalog_age_stats(movies, current_year=2026):
+    """Возвращает максимальный, минимальный и средний возраст фильмов"""
+    ages = []
+
+    for movie in movies:
+        age = current_year - movie["year"]
+        ages.append(age)
+
+    oldest = max(ages)
+    newest = min(ages)
+    average_age = math.ceil(sum(ages) / len(ages))
+
+    return (oldest, newest, average_age)
+
+
+def duration_in_hours(minutes):
+    """Переводит минуты в строку с часами и минутами"""
+    hours = minutes // 60
+    remaining_minutes = minutes % 60
+
+    return f"{hours}ч {remaining_minutes}м"
+
+
 if __name__ == "__main__":
     print("Средний рейтинг:", average_rating(movies))
+    print("Статистика возраста:", catalog_age_stats(movies))
+    print("Продолжительность:", duration_in_hours(155))
