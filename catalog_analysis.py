@@ -177,7 +177,40 @@ def count_long_movies(movies, threshold=120):
     return count
 
 
+# Этап 4
+def normalize_title(title):
+    """Приводит название фильма к формату Title Case"""
+    words = title.split()
+    normalized_words = []
 
+    for word in words:
+        normalized_word = word[0].upper() + word[1:].lower()
+        normalized_words.append(normalized_word)
+
+    return " ".join(normalized_words)
+
+
+def make_slug(title):
+    """Преобразует название фильма в slug"""
+    normalized = normalize_title(title)
+    slug = normalized.lower().replace(" ", "-")
+
+    return slug
+
+
+def format_report_line(movie):
+    """Формирует строку с информацией о фильме"""
+    title = normalize_title(movie["title"])
+    genres = ", ".join(sorted(movie["genres"]))
+    duration = duration_in_hours(movie["duration_min"])
+
+    return (
+        f'"{title}" ({movie["year"]}) — {movie["rating"]}/10, '
+        f"{duration}, жанры: {genres}"
+    )
+
+
+# Проверки
 if __name__ == "__main__":
     # Проверки этапа 1
     print("Средний рейтинг:", average_rating(movies))
@@ -206,3 +239,19 @@ if __name__ == "__main__":
     print("Длиннее 120 минут:", count_long_movies(movies))
     print("Длиннее 150 минут:", count_long_movies(movies, 150))
     print("Длиннее 200 минут:", count_long_movies(movies, 200))
+    
+    # Проверки этапа 4
+    print("\nНормализация названий:")
+    print(normalize_title("silent hours"))
+    print(normalize_title("midnight in oslo"))
+    print(normalize_title("THE QUIET ALGORITHM"))
+    print(normalize_title("sILENT hOURS"))
+    print("\nСоздание slug:")
+    print(make_slug("The Quiet Algorithm"))
+    print(make_slug("silent hours"))
+    print(make_slug("midnight in oslo"))
+    print(make_slug("THE DUNE CHRONICLES"))
+    print("\nФорматирование информации о фильмах:")
+    print(format_report_line(movies[7]))
+    print(format_report_line(movies[5]))
+    print(format_report_line(movies[0]))
