@@ -243,6 +243,42 @@ def top_n_by_rating(movies, n=3):
     return top_movies
 
 
+# Этап 6
+def count_by_genre(movies):
+    """Подсчитывает количество фильмов каждого жанра"""
+    genre_counts = {}
+
+    for movie in movies:
+        for genre in movie["genres"]:
+            genre_counts[genre] = genre_counts.get(genre, 0) + 1
+
+    return genre_counts
+
+
+def actor_filmography(movies):
+    """Составляет фильмографию для каждого актёра"""
+    filmography = {}
+
+    for movie in movies:
+        for actor in movie["actors"]:
+            if actor not in filmography:
+                filmography[actor] = []
+
+            filmography[actor].append(movie["title"])
+
+    return filmography
+
+
+def above_average_movies(movies):
+    """Возвращает словарь фильмов с рейтингом выше среднего"""
+    average = average_rating(movies)
+
+    return {
+        movie["title"]: movie["rating"]
+        for movie in movies
+        if movie["rating"] > average
+    }
+
 
 # Проверки
 if __name__ == "__main__":
@@ -307,3 +343,26 @@ if __name__ == "__main__":
     print(top_n_by_rating(movies, 5))
     print("\nЛучший фильм:")
     print(top_n_by_rating(movies, 1))
+
+    # Проверки этапа 6
+    print("\nКоличество фильмов по жанрам:")
+
+    genre_counts = count_by_genre(movies)
+
+    for genre in sorted(genre_counts):
+        print(f"{genre}: {genre_counts[genre]}")
+
+    print("\nФильмография актёров:")
+
+    filmography = actor_filmography(movies)
+
+    print("O. Isaac:", filmography["O. Isaac"])
+    print("A. Novak:", filmography["A. Novak"])
+    print("K. Lee:", filmography["K. Lee"])
+
+    print("\nФильмы с рейтингом выше среднего:")
+
+    high_rated_movies = above_average_movies(movies)
+
+    for title, rating in high_rated_movies.items():
+        print(f"{title}: {rating}")
