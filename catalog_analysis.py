@@ -280,6 +280,34 @@ def above_average_movies(movies):
     }
 
 
+# Этап 7
+def all_genres(movies):
+    """Возвращает множество всех уникальных жанров каталога"""
+    genres = set()
+
+    for movie in movies:
+        genres |= movie["genres"]
+
+    return genres
+
+
+def common_actors(movie1, movie2):
+    """Возвращает множество общих актёров двух фильмов"""
+    actors1 = set(movie1["actors"])
+    actors2 = set(movie2["actors"])
+
+    return actors1 & actors2
+
+
+def genres_only_in_one(movies_a, movies_b):
+    """Возвращает жанры первого каталога, отсутствующие во втором"""
+    genres_a = all_genres(movies_a)
+    genres_b = all_genres(movies_b)
+
+    return genres_a - genres_b
+
+
+
 # Проверки
 if __name__ == "__main__":
     # Проверки этапа 1
@@ -366,3 +394,35 @@ if __name__ == "__main__":
 
     for title, rating in high_rated_movies.items():
         print(f"{title}: {rating}")
+
+    # Проверки этапа 7
+    print("\nВсе уникальные жанры каталога:")
+    print(all_genres(movies))
+
+    print("\nЖанры по алфавиту:")
+    print(", ".join(sorted(all_genres(movies))))
+
+    print("Количество уникальных жанров:", len(all_genres(movies)))
+
+    print("\nОбщие актёры двух фильмов:")
+
+    print("Фильмы 1 и 4:", common_actors(movies[0], movies[3]))
+    print("Фильмы 1 и 6:", common_actors(movies[0], movies[5]))
+    print("Фильмы 1 и 2:", common_actors(movies[0], movies[1]))
+
+    print("\nРазность жанров двух каталогов:")
+
+    print(
+        "Пример 1:",
+        genres_only_in_one(movies[5:6], movies[:5]),
+    )
+
+    print(
+        "Пример 2:",
+        genres_only_in_one(movies[0:1], movies[1:2]),
+    )
+
+    print(
+        "Пример 3:",
+        genres_only_in_one(movies[1:2], movies[0:1]),
+    )
