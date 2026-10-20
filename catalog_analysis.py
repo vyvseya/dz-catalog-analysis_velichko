@@ -210,6 +210,40 @@ def format_report_line(movie):
     )
 
 
+# Этап 5
+def titles_sorted_by_rating(movies):
+    """Возвращает названия фильмов по убыванию рейтинга"""
+    sorted_movies = sorted(
+        movies,
+        key=lambda movie: movie["rating"],
+        reverse=True,
+    )
+
+    titles = []
+
+    for movie in sorted_movies:
+        titles.append(movie["title"])
+
+    return titles
+
+
+def top_n_by_rating(movies, n=3):
+    """Возвращает топ-N фильмов в виде списка кортежей"""
+    sorted_movies = sorted(
+        movies,
+        key=lambda movie: movie["rating"],
+        reverse=True,
+    )
+
+    top_movies = []
+
+    for movie in sorted_movies[:n]:
+        top_movies.append((movie["title"], movie["rating"]))
+
+    return top_movies
+
+
+
 # Проверки
 if __name__ == "__main__":
     # Проверки этапа 1
@@ -222,6 +256,7 @@ if __name__ == "__main__":
     print("Рейтинг 8.6:", rating_tier(8.6))
     print("Рейтинг 6.4:", rating_tier(6.4))
     print("Рейтинг 4.8:", rating_tier(4.8))
+    
     print("Год 2014:", decade_label(2014))
     print("Год 2015:", decade_label(2015))
     print("Год 2020:", decade_label(2020))
@@ -231,10 +266,12 @@ if __name__ == "__main__":
     # Проверки этапа 3
     print("\nФильмы без жанра comedy:")
     not_comedy_movies(movies)
+   
     print("\nПоиск шедевра в полном каталоге:")
     find_first_masterpiece(movies)
     print("\nПоиск шедевра в сокращённом каталоге:")
     find_first_masterpiece(movies[:7])
+   
     print("\nКоличество длинных фильмов:")
     print("Длиннее 120 минут:", count_long_movies(movies))
     print("Длиннее 150 минут:", count_long_movies(movies, 150))
@@ -246,12 +283,27 @@ if __name__ == "__main__":
     print(normalize_title("midnight in oslo"))
     print(normalize_title("THE QUIET ALGORITHM"))
     print(normalize_title("sILENT hOURS"))
+   
     print("\nСоздание slug:")
     print(make_slug("The Quiet Algorithm"))
     print(make_slug("silent hours"))
     print(make_slug("midnight in oslo"))
     print(make_slug("THE DUNE CHRONICLES"))
+    
     print("\nФорматирование информации о фильмах:")
     print(format_report_line(movies[7]))
     print(format_report_line(movies[5]))
     print(format_report_line(movies[0]))
+
+    # Проверки этапа 5
+    print("\nФильмы по убыванию рейтинга:")
+
+    for title in titles_sorted_by_rating(movies):
+        print(title)
+    
+    print("\nТоп-3 фильма:")
+    print(top_n_by_rating(movies))
+    print("\nТоп-5 фильмов:")
+    print(top_n_by_rating(movies, 5))
+    print("\nЛучший фильм:")
+    print(top_n_by_rating(movies, 1))
